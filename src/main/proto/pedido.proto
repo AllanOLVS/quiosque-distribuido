@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package com.ifba.quiosque;
+
+option java_multiple_files = true;
+option java_package = "com.ifba.quiosque.proto";
+
+service PedidoService {
+  rpc EnviarPedido (PedidoRequest) returns (PedidoResponse) {};
+}
+
+message PedidoRequest {
+  string idQuiosque = 1;
+  string nomePrato = 2;
+  double valor = 3;
+}
+
+message PedidoResponse {
+  string idPedido = 1;
+  string status = 2;
+  string mensagem = 3;
+}
