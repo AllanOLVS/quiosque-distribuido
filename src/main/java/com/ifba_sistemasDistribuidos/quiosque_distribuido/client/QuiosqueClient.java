@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class QuiosqueClient implements CommandLineRunner {
 
+    // Faz com que seja injetado um cliente pronto conectado ao servidor
+    //O parametro "BlockingStub" diz que a comunicação é SÍNCRONA, então código trava aqui pra esperar o servidor responder.
     @GrpcClient("quiosque-server")
     private PedidoServiceGrpc.PedidoServiceBlockingStub pedidoStub;
 
@@ -34,6 +36,7 @@ public class QuiosqueClient implements CommandLineRunner {
         System.out.println("-> FIM DA SIMULAÇÃO");
     }
 
+    // Metodo auxiliar, so pra não repetir código de try/catch toda hora
     private void enviarPedidoSimulado(String nomeQuiosque, String prato, double valor) {
         try {
             PedidoRequest request = PedidoRequest.newBuilder()
@@ -42,6 +45,8 @@ public class QuiosqueClient implements CommandLineRunner {
                     .setValor(valor)
                     .build();
 
+            // O metodo "enviarPedido" é chamado como se fosse local, mas o Stub serializa ele e manda pra rede, na porta 9090,
+            // espera o servidor, e traz a resposta
             PedidoResponse response = pedidoStub.enviarPedido(request);
 
             System.out.println(nomeQuiosque + " recebeu resposta:");

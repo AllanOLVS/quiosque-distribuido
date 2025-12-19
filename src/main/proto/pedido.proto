@@ -1,20 +1,30 @@
+// Utilizando a versão 3 do Protocol Buffers, que é a mais moderna
 syntax = "proto3";
 
 package com.ifba.quiosque;
 
+// É pra que as classes necessarias sejam geradas (Request, Response, Service) em um arquivo .java separado
 option java_multiple_files = true;
+
+// Definindo em qual pacote do Java as classes geradas irão ficar
 option java_package = "com.ifba.quiosque.proto";
 
+// Aqui, é pra dizer quais metodos o servidor tem
 service PedidoService {
+  // Recebe um PedidoRequest e devolve um PedidoResponse
   rpc EnviarPedido (PedidoRequest) returns (PedidoResponse) {};
 }
 
+// Estrutura da mensagem que o quiosque envia pra cozinha
 message PedidoRequest {
+  // Os numeros 1 e 2 que são atribuidos as variaveis são Tags/Índices
+  // Utilizado pelo gRPC pra distinguir os campos no binário
   string idQuiosque = 1;
   string nomePrato = 2;
   double valor = 3;
 }
 
+// Estrutura da mensagem de resposta, o que é enviado da Cozinha pro Quiosque
 message PedidoResponse {
   string idPedido = 1;
   string status = 2;
